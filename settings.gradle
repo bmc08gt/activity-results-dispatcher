@@ -1,0 +1,3 @@
+include ':activity-results-dispatcher'
+include ':app'
+rootProject.name = "graphql-annotation-processor"

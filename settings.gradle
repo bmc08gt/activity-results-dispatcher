@@ -1,3 +1,4 @@
-include ':activity-results-dispatcher'
+include ':library'
 include ':app'
+
 rootProject.name = "activity-results-dispatcher"

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 
 @InternalCoroutinesApi
-abstract class ActivityResultContainer<D: ActivityResultDispatcher<*>> : CoroutineScope by CoroutineScope(Dispatchers.Main) {
+abstract class ActivityResultContainer<D: ActivityResultDispatcher<*>>(private val scope: CoroutineScope)  {
     fun start() {
         start(null)
     }
@@ -20,7 +20,7 @@ abstract class ActivityResultContainer<D: ActivityResultDispatcher<*>> : Corouti
         intent: Intent,
         callback: D?
     ) {
-        launch {
+        scope.launch {
             dispatcher.start(intent).collect(object : FlowCollector<ActivityResult> {
                 override suspend fun emit(value: ActivityResult) {
                     handleResult(value, callback)
@@ -28,5 +28,5 @@ abstract class ActivityResultContainer<D: ActivityResultDispatcher<*>> : Corouti
             })
         }
     }
-    internal abstract fun handleResult(result: ActivityResult, callback: D?)
+    protected abstract fun handleResult(result: ActivityResult, callback: D?)
 }
